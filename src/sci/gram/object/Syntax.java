@@ -7,7 +7,7 @@ public class Syntax {
     private Token parent;
 
     public Syntax(String syntax){
-        this.syntax = syntax;
+        this.syntax = syntax.replace("*","<AND>");
     }
 
     public void setParent(Token parent) {

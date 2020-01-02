@@ -4,7 +4,7 @@ public class Runner {
 
     public static void main(String[] args) {
         Sci sci = Sci.use();
-        sci.compile(args[0]);
+        sci.compile("sample/plus_minus.scgram");
         Sci.close();
     }
 

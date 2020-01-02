@@ -1,9 +1,13 @@
 package sci.gram;
 
+import sci.gram.object.Syntax;
+import sci.gram.object.Token;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 class Generator {
 
@@ -11,6 +15,10 @@ class Generator {
 
     private String extension;
     private String url;
+    private ArrayList<Token> tokenList;
+    private ArrayList<Integer> tokenTypeList;
+    private ArrayList<Syntax> syntaxList;
+    private ArrayList<String> syntaxKeyList;
 
     private Generator(){
         extension = ".gmr";
@@ -27,6 +35,10 @@ class Generator {
     }
 
     static Generator close(){
+        instance.tokenList = null;
+        instance.syntaxList = null;
+        instance.syntaxKeyList = null;
+        instance.tokenTypeList = null;
         return instance = null;
     }
 
@@ -34,6 +46,17 @@ class Generator {
         System.out.println(dir);
         url = dir.split("\\.")[0] + extension;
     }
+
+    void setTokenList(ArrayList<Token> tokenList,ArrayList<Integer> tokenTypeList){
+        this.tokenList = tokenList;
+        this.tokenTypeList = tokenTypeList;
+    }
+
+    void setSyntaxList(ArrayList<Syntax> syntaxList,ArrayList<String> syntaxKeyList){
+        this.syntaxList = syntaxList;
+        this.syntaxKeyList = syntaxKeyList;
+    }
+
 
     void generate(){
         File file = new File(url);
@@ -51,10 +74,18 @@ class Generator {
     }
 
     private void writeToken(BufferedWriter writer)throws IOException{
-        System.out.println("WRITE TOKEN");
+        writer.write("@@TOKEN\n");
+        int iter = 0;
+        for (Token token:tokenList){
+            writer.write(token.getKey()+"\t|\t"+token.getPrecedence()+"\t|\t"+tokenTypeList.get(iter++)+"\n");
+        }
     }
 
     private void writeFunctionality(BufferedWriter writer)throws IOException{
-        System.out.println("WRITE FUNCTIONALITY");
+        writer.write("@@SYNTAX\n");
+        int iter = 0;
+        for (Syntax syntax:syntaxList){
+            writer.write(syntaxKeyList.get(iter++)+"\t|\t"+syntax.getSyntax()+"\t|\t"+syntax.getParent().getKey()+"\t|\t"+syntax.getOperation()+"\n");
+        }
     }
 }

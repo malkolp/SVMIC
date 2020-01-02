@@ -3,6 +3,7 @@ package sci.gram.map;
 import sci.gram.object.Token;
 import sci.gram.option.Token_type;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Token_map {
@@ -10,6 +11,8 @@ public class Token_map {
     private static Token_map instance;
 
     private HashMap<String, Token> token_map;
+    private ArrayList<Token> tokenList;
+    private ArrayList<Integer> tokenTypeList;
 
     private Token_type type;
     private Preprocessor_map preprocessor_map;
@@ -22,6 +25,8 @@ public class Token_map {
         non_terminal_map = Non_terminal_map.use();
         terminal_map     = Terminal_map.use();
         token_map = new HashMap<>();
+        tokenList = new ArrayList<>();
+        tokenTypeList = new ArrayList<>();
     }
 
     private static void init(){
@@ -44,6 +49,8 @@ public class Token_map {
 
     public void put(String key,Token token,int token_type){
         token_map.put(key, token);
+        tokenList.add(token);
+        tokenTypeList.add(token_type);
         if (token_type == type.PREPROCESSOR())
             preprocessor_map.put(key, token);
         else if (token_type == type.NON_TERMINAL())
@@ -67,5 +74,15 @@ public class Token_map {
     public Token get_terminal(String key){
         return terminal_map.get(key);
     }
+
+    public ArrayList<Token> return_tokens(){
+        return tokenList;
+    }
+
+    public ArrayList<Integer> return_types(){
+        return tokenTypeList;
+    }
+
+
 
 }

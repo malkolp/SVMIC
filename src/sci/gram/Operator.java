@@ -184,6 +184,7 @@ class Operator {
         if (syntax_map.get(val) == null && token_map.get_token(val)!= null){
             syntax = new Syntax(val);
             syntax.setOperation(lang_fun.getFunctionality(value));
+            syntax.setParent(token_map.get_token(val));
             syntax_map.put(val,syntax);
         } else {
             syntax = syntax_map.get(val);

@@ -1,0 +1,32 @@
+init id,const,plus,minus,assign,trm;
+
+id      := "id";
+const   := "const";
+plus    := "+";
+minus   := "-";
+assign  := "=";
+trm     := ";";
+
+prec id     := HIGHEST;
+prec const  := HIGHEST;
+prec plus   := < id;
+prec minus  := < id;
+prec assign := < plus;
+prec trm    := < assign;
+
+init Exp,Exp_plus,Exp_minus,Exp_assign,Statement;
+
+Statement   -> Exp_assign * term;
+Exp_assign  -> id * assign * Exp;
+Exp         -> id |
+            -> const |
+            -> Exp_plus |
+            -> Exp_minus;
+Exp_plus    -> Exp * plus * Exp;
+Exp_minus   -> Exp * minus * Exp;
+
+set id          := REGISTER.ID;
+set const       := REGISTER.CONST;
+set Exp_assign  := ASSIGNMENT.ASSIGN;
+set Exp_minus   := ARITHMETIC.MINUS;
+set Exp_plus    := ARITHMETIC.PLUS;

@@ -1,5 +1,7 @@
 package sci.gram;
 
+import sci.gram.map.Syntax_map;
+import sci.gram.map.Token_map;
 import sci.gram.parser.Parser;
 
 class Machine {
@@ -39,8 +41,12 @@ class Machine {
     void process(String code,String url){
         boolean proceed = parser.parsed(code);
         if (proceed){
+            Syntax_map syn_map = Syntax_map.use();
+            Token_map tok_map  = Token_map.use();
             queue.setMemory(parser.getMemory());
             operator.operate(parser.getPattern(),queue);
+            generator.setSyntaxList(syn_map.return_syntax(),syn_map.return_keys());
+            generator.setTokenList(tok_map.return_tokens(),tok_map.return_types());
             generator.setDirectory(url);
             generator.generate();
         }
